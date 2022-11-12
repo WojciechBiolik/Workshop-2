@@ -24,8 +24,9 @@ public class MainDao {
         userToUpdate.setEmail("zenek@op.pl");
         userToUpdate.setPassword("admin01");
         userDao.update(userToUpdate);*/
-        UserDao userDao = new UserDao();
-        userDao.delete(5);
+/*        UserDao userDao = new UserDao();
+        userDao.delete(5);*/
+        UserDao.findAll();
 
 
     }

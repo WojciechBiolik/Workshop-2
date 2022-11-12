@@ -3,6 +3,7 @@ package pl.coderslab.entity;
 import org.mindrot.jbcrypt.BCrypt;
 import pl.coderslab.DbUtil;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 
 public class UserDao {
@@ -97,7 +98,18 @@ public class UserDao {
         }
     }
 
-    public void findAll(){
-
+    public static void findAll(){
+        try(Connection connection = DbUtil.getConnection()){
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(FINDALL_QUERY);
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String userName = rs.getString("username");
+                String email = rs.getString("email");
+                System.out.println(id + ", " + userName + ", " + email);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
