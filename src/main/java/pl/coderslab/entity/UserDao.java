@@ -11,9 +11,9 @@ public class UserDao {
 
     private static final String READ_USER_QUERY = "SELECT * FROM users WHERE id = ?;";
 
-    private static final String UPDATE_USER_QUERY ="UPDATE users SET email = ?, username = ?, password = ? WHERE id = ?;";
+    private static final String UPDATE_USER_QUERY = "UPDATE users SET email = ?, username = ?, password = ? WHERE id = ?;";
 
-    private static final String DELETE_USER_QUERY ="DELETE FROM users WHERE id = ?;";
+    private static final String DELETE_USER_QUERY = "DELETE FROM users WHERE id = ?;";
 
     private static final String FINDALL_QUERY = "SELECT * FROM users;";
 
@@ -41,6 +41,36 @@ public class UserDao {
         }
     }
 
+    public User read(User user) {
+        try (Connection conn = DbUtil.getConnection()) {
+            PreparedStatement statement =
+                    conn.prepareStatement(READ_USER_QUERY, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(1, user.getId());
+            statement.executeUpdate();
+            return user;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-
+    public User read(int userId) {
+        try (Connection conn = DbUtil.getConnection()) {
+            PreparedStatement statement =
+                    conn.prepareStatement(READ_USER_QUERY);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setUserName(resultSet.getString("username"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPassword(resultSet.getString("username"));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
