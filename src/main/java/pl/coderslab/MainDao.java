@@ -18,12 +18,14 @@ public class MainDao {
         user2 = userDao.read(3);
         System.out.println(user2.getUserName());*/
 
-        UserDao userDao = new UserDao();
+/*        UserDao userDao = new UserDao();
         User userToUpdate = userDao.read(3);
         userToUpdate.setUserName("Zenek");
         userToUpdate.setEmail("zenek@op.pl");
         userToUpdate.setPassword("admin01");
-        userDao.update(userToUpdate);
+        userDao.update(userToUpdate);*/
+        UserDao userDao = new UserDao();
+        userDao.delete(5);
 
 
     }

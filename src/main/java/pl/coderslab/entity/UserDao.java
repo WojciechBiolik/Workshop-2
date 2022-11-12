@@ -80,7 +80,17 @@ public class UserDao {
             preparedStatement.setString(1, user.getEmail());
             preparedStatement.setString(2, user.getUserName());
             preparedStatement.setString(3, this.hashPassword(user.getPassword()));
-            preparedStatement.setInt(4,user.getId());
+            preparedStatement.setInt(4, user.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(int userId) {
+        try (Connection connection = DbUtil.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_QUERY);
+            preparedStatement.setInt(1, userId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
