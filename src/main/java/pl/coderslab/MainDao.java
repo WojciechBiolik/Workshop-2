@@ -26,8 +26,16 @@ public class MainDao {
         userDao.update(userToUpdate);*/
 /*        UserDao userDao = new UserDao();
         userDao.delete(5);*/
-        UserDao.findAll();
+        UserDao userDao = new UserDao();
 
-
+        User secondUser = new User();
+        secondUser.setUserName("marek");
+        secondUser.setEmail("marek@coderslab.pl");
+        secondUser.setPassword("pass");
+        userDao.create(secondUser);
+        User[] all = userDao.findAll();
+        for (User u : all) {
+            System.out.println(u);
+        }
     }
 }

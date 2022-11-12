@@ -5,6 +5,7 @@ import pl.coderslab.DbUtil;
 
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
+import java.util.Arrays;
 
 public class UserDao {
     private static final String CREATE_USER_QUERY =
@@ -98,18 +99,29 @@ public class UserDao {
         }
     }
 
-    public static void findAll(){
-        try(Connection connection = DbUtil.getConnection()){
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(FINDALL_QUERY);
+    public User[] findAll() {
+        try (Connection connection = DbUtil.getConnection()) {
+            User[] users = new User[0];
+            PreparedStatement preparedStatement = connection.prepareStatement(FINDALL_QUERY);
+            ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
-                int id = rs.getInt("id");
-                String userName = rs.getString("username");
-                String email = rs.getString("email");
-                System.out.println(id + ", " + userName + ", " + email);
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUserName(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                users = addToArray(user, users);
             }
+            return users;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
+    }
+
+    private User[] addToArray(User u, User[] users) {
+        User[] tmpUsers = Arrays.copyOf(users, users.length + 1); // Tworzymy kopię tablicy powiększoną o 1.
+        tmpUsers[users.length] = u; // Dodajemy obiekt na ostatniej pozycji.
+        return tmpUsers; // Zwracamy nową tablicę.
     }
 }
