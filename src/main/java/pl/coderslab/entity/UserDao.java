@@ -96,4 +96,8 @@ public class UserDao {
             e.printStackTrace();
         }
     }
+
+    public void findAll(){
+
+    }
 }
