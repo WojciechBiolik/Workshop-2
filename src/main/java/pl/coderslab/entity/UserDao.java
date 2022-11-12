@@ -73,4 +73,17 @@ public class UserDao {
         }
         return null;
     }
+
+    public void update(User user) {
+        try (Connection connection = DbUtil.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_QUERY);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, user.getUserName());
+            preparedStatement.setString(3, this.hashPassword(user.getPassword()));
+            preparedStatement.setInt(4,user.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
